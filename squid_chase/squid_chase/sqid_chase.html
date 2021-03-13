@@ -1,0 +1,53 @@
+<head>
+  <script src="https://cdn.jsdelivr.net/gh/stevekrouse/WoofJS@cb6d0621/dist/woof.js"></script>
+    <script>
+    // Squid Chase
+    
+    // Step 1: Sets the backdrop to a new image 
+   setBackdropURL("./images/squidchase-backdrop.jpg")
+    
+    // Step3: Create variable "fish" 
+    var fish = new Image({url: "./images/squidchase-fish.png", height:50, width:50})
+    
+    // Step 2: Create variable squid
+var squid = new Image({url: "./images/squidchase-squid.png", height: 140, width: 140,x: maxX -70,y: minY  +70 })
+    
+    // Step 4: Creates a variable "timer" that starts at 0 and is displayed through the text variable "timertext"
+var timer = 0
+var timertext = new Text({text: () => "Timer: " + timer, y:300, size: 60})
+    
+    // Step 5: Creates text variable "scoretext" that displays the variable "timer"
+ 
+        var scoretext = new Text({text: () => "You survived for " + timer + "seconds", y:70, size:60})
+    
+    // Step 6: Hides the variable "scoretext" when the game starts
+scoretext.showing = false;
+        
+    // Step 7: Increment the timer every second
+every(1, "seconds", () => {
+    timer++;
+})
+    
+    // Step 8: Makes the "squid" follows the current xy coordinates of the mouse pointer, and increases its following speed based off of the value of the variable "timer"
+forever ( () =>{
+    squid.pointTowards(mouseX, mouseY);
+    squid.move(timer);
+    
+    fish.x = mouseX
+    fish.y = mouseY
+    fish.pointTowards(mouseX, mouseY)
+})
+    
+    // Step 9: The game ends if the "squid" touches the "fish"
+forever ( () => {
+    if (squid.touching(fish)){
+        fish.showing = false,
+        squid.showing = false,
+            timertext.showing = false,
+            scoretext.showing = true,
+            freeze()
+    }
+})
+        
+    </script>
+</head>
